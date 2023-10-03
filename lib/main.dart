@@ -36,8 +36,56 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Container(
           color: Theme.of(context).colorScheme.primaryContainer,
           child: (const Column(
-            children: [Weather(), LocalTime(), ButtonsNav()],
+            children: [
+              Weather(),
+              LocalTime(),
+              ButtonsNav(),
+              DayList(),
+            ],
           ))),
+    );
+  }
+}
+
+class DayList extends StatelessWidget {
+  const DayList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 150,
+          child: ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            children: [
+              Container(
+                width: 100,
+                color: Colors.red,
+              ),
+              Container(
+                width: 100,
+                color: Colors.blue,
+              ),
+              Container(
+                width: 100,
+                color: Colors.green,
+              ),
+              Container(
+                width: 100,
+                color: Colors.yellow,
+              ),
+              Container(
+                width: 100,
+                color: Colors.orange,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
