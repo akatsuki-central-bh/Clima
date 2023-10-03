@@ -36,11 +36,31 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Container(
           color: Theme.of(context).colorScheme.primaryContainer,
           child: (const Column(
-            children: [
-              Weather(),
-              LocalTime(),
-            ],
+            children: [Weather(), LocalTime(), ButtonsNav()],
           ))),
+    );
+  }
+}
+
+class ButtonsNav extends StatelessWidget {
+  const ButtonsNav({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: null,
+          icon: Icon(Icons.menu),
+        ),
+        IconButton(
+          onPressed: null,
+          icon: Icon(Icons.add),
+        ),
+      ],
     );
   }
 }
