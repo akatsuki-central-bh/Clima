@@ -55,7 +55,7 @@ class LocalTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.all(20.0),
       child: Column(
         children: [
@@ -64,11 +64,15 @@ class LocalTime extends StatelessWidget {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
+              color: Colors.blue[50],
             ),
           ),
           Text(
             'Segunda-feira, 20 de setembro de 2021',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.blue[50],
+            ),
           ),
         ],
       ),
@@ -83,7 +87,7 @@ class Weather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -91,17 +95,28 @@ class Weather extends StatelessWidget {
           children: [
             Icon(
               Icons.cloud,
-              size: 100,
-              color: Colors.white,
+              size: 50,
+              color: Colors.blue[50],
             ),
             Text(
               '22°',
-              style: TextStyle(fontSize: 40),
+              style: TextStyle(
+                fontSize: 75,
+                color: Colors.blue[50],
+              ),
             ),
           ],
         ),
-        Text('27/20° sensação de 24°', style: TextStyle(fontSize: 16)),
-        Text('predominante nublado', style: TextStyle(fontSize: 16)),
+        Text('27/20° sensação de 24°',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.blue[50],
+            )),
+        Text('predominante nublado',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.blue[50],
+            )),
       ],
     );
   }
@@ -114,18 +129,27 @@ class ButtonsNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: null,
-          icon: Icon(Icons.menu),
-        ),
-        IconButton(
-          onPressed: null,
-          icon: Icon(Icons.add),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.menu,
+              color: Colors.blue[50],
+            ),
+          ),
+          IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.add,
+              color: Colors.blue[50],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -154,7 +178,7 @@ class DayList extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 250,
+              height: 200,
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -229,36 +253,35 @@ class Hourly extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100,
-      height: 500,
       margin: const EdgeInsets.all(10),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(time, style: const TextStyle(color: Colors.white)),
+          Text(time, style: TextStyle(color: Colors.blue[50])),
           Column(children: [
             Icon(
               icon,
               size: 50,
-              color: Colors.white,
+              color: Colors.blue[50],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Icon(
+                Icon(
                   Icons.water_drop,
                   size: 20,
-                  color: Colors.white,
+                  color: Colors.blue[50],
                 ),
                 Text(
                   humidity,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.blue[50]),
                 ),
               ],
             ),
           ]),
-          Text(temperature, style: const TextStyle(color: Colors.white)),
+          Text(temperature, style: TextStyle(color: Colors.blue[50])),
         ],
       ),
     );
