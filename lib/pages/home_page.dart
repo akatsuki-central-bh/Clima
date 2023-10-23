@@ -1,4 +1,8 @@
+import 'package:clima/components/forecast_dailies_components.dart';
+import 'package:clima/models/forecast_model.dart';
+import 'package:clima/services/hgbrasil.dart';
 import 'package:flutter/material.dart';
+import 'package:clima/services/http_client.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -10,16 +14,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final forecasts = HgBrasil(httpClient: HttpClient()).getWeather('455827');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[500],
-      body: const SafeArea(
+      body: SafeArea(
         child: Column(
           children: [
             Informations(),
             ButtonsNav(),
-            DayList(),
+            FutureBuilder<List<ForecastModel>>(
+              future: forecasts,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ForecastDailiesComponents(forecasts: snapshot.data!);
+                } else {
+                  return Text("Erro");
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -148,140 +163,6 @@ class ButtonsNav extends StatelessWidget {
               color: Colors.blue[50],
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class DayList extends StatelessWidget {
-  const DayList({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.blue[300],
-          border: Border.all(
-            color: Colors.transparent,
-            width: 1,
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 200,
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: [
-                  Hourly(
-                    time: '12 p.m.',
-                    icon: Icons.cloud,
-                    humidity: '30%',
-                    temperature: '22°',
-                  ),
-                  Hourly(
-                    time: '12 p.m.',
-                    icon: Icons.cloud,
-                    humidity: '30%',
-                    temperature: '22°',
-                  ),
-                  Hourly(
-                    time: '12 p.m.',
-                    icon: Icons.cloud,
-                    humidity: '30%',
-                    temperature: '22°',
-                  ),
-                  Hourly(
-                    time: '12 p.m.',
-                    icon: Icons.cloud,
-                    humidity: '30%',
-                    temperature: '22°',
-                  ),
-                  Hourly(
-                    time: '12 p.m.',
-                    icon: Icons.cloud,
-                    humidity: '30%',
-                    temperature: '22°',
-                  ),
-                  Hourly(
-                    time: '12 p.m.',
-                    icon: Icons.cloud,
-                    humidity: '30%',
-                    temperature: '22°',
-                  ),
-                  Hourly(
-                    time: '12 p.m.',
-                    icon: Icons.cloud,
-                    humidity: '30%',
-                    temperature: '22°',
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class Hourly extends StatelessWidget {
-  const Hourly({
-    super.key,
-    required this.time,
-    required this.icon,
-    required this.humidity,
-    required this.temperature,
-  });
-
-  final String time;
-  final IconData icon;
-  final String humidity;
-  final String temperature;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(time, style: TextStyle(color: Colors.blue[50])),
-          Column(children: [
-            Icon(
-              icon,
-              size: 50,
-              color: Colors.blue[50],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.water_drop,
-                  size: 20,
-                  color: Colors.blue[50],
-                ),
-                Text(
-                  humidity,
-                  style: TextStyle(color: Colors.blue[50]),
-                ),
-              ],
-            ),
-          ]),
-          Text(temperature, style: TextStyle(color: Colors.blue[50])),
         ],
       ),
     );
