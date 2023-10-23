@@ -1,5 +1,5 @@
 import 'package:clima/components/forecast_dailies_components.dart';
-import 'package:clima/models/forecast_model.dart';
+import 'package:clima/data/models/weather_model.dart';
 import 'package:clima/services/hgbrasil.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/services/http_client.dart';
@@ -14,28 +14,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final forecasts = HgBrasil(httpClient: HttpClient()).getWeather('455827');
+  final Future<WeatherModel> weather =
+      HgBrasil(httpClient: HttpClient()).getWeather('455827');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[500],
       body: SafeArea(
-        child: Column(
-          children: [
-            Informations(),
-            ButtonsNav(),
-            FutureBuilder<List<ForecastModel>>(
-              future: forecasts,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ForecastDailiesComponents(forecasts: snapshot.data!);
-                } else {
-                  return Text("Erro");
-                }
-              },
-            ),
-          ],
+        child: FutureBuilder<WeatherModel>(
+          future: weather,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              // return ForecastDailiesComponents(forecasts: snapshot.data!);
+              return Column(
+                children: [
+                  Informations(weather: snapshot.data!),
+                  ButtonsNav(),
+                  ForecastDailiesComponents(
+                      forecasts: snapshot.data!.forecasts),
+                ],
+              );
+            } else {
+              return Text("Erro");
+            }
+          },
         ),
       ),
     );
@@ -43,20 +46,29 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Informations extends StatelessWidget {
+  final WeatherModel weather;
+
   const Informations({
     super.key,
+    required this.weather,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       height: 400,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          LocalTime(),
-          Weather(),
+          LocalTime(
+            city: weather.city,
+            date: weather.date,
+          ),
+          Weather(
+            temp: weather.temp,
+            description: weather.description,
+          ),
         ],
       ),
     );
@@ -64,8 +76,13 @@ class Informations extends StatelessWidget {
 }
 
 class LocalTime extends StatelessWidget {
+  final String city;
+  final String date;
+
   const LocalTime({
     super.key,
+    required this.city,
+    required this.date,
   });
 
   @override
@@ -75,7 +92,7 @@ class LocalTime extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Franco da Rocha',
+            city,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -83,7 +100,7 @@ class LocalTime extends StatelessWidget {
             ),
           ),
           Text(
-            'Segunda-feira, 20 de setembro de 2021',
+            date,
             style: TextStyle(
               fontSize: 16,
               color: Colors.blue[50],
@@ -96,8 +113,13 @@ class LocalTime extends StatelessWidget {
 }
 
 class Weather extends StatelessWidget {
+  final int temp;
+  final String description;
+
   const Weather({
     super.key,
+    required this.temp,
+    required this.description,
   });
 
   @override
@@ -114,7 +136,7 @@ class Weather extends StatelessWidget {
               color: Colors.blue[50],
             ),
             Text(
-              '22°',
+              '$temp°',
               style: TextStyle(
                 fontSize: 75,
                 color: Colors.blue[50],
@@ -122,12 +144,7 @@ class Weather extends StatelessWidget {
             ),
           ],
         ),
-        Text('27/20° sensação de 24°',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.blue[50],
-            )),
-        Text('predominante nublado',
+        Text(description,
             style: TextStyle(
               fontSize: 16,
               color: Colors.blue[50],
