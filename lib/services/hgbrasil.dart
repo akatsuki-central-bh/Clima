@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:clima/models/forecast_model.dart';
+import 'package:clima/data/models/weather_model.dart';
 import 'package:clima/services/http_client.dart';
 
 class HgBrasil {
@@ -11,27 +11,15 @@ class HgBrasil {
 
   HgBrasil({required this.httpClient});
 
-  Future<List<ForecastModel>> getWeather(String woeid) async {
+  Future<WeatherModel> getWeather(String woeid) async {
     final response = await httpClient.get(
       url: "$url/weather?woeid=$woeid&key=$token",
     );
 
     if (response.statusCode == 200) {
-      final List<ForecastModel> forecasts = [];
-
       final body = jsonDecode(response.body);
 
-      body['results']['forecast'].map((forecast) {
-        final forecastModel = ForecastModel.fromJson(forecast);
-
-        forecasts.add(forecastModel);
-      }).toList();
-
-      return forecasts;
-
-      // return body['results']['forecast'].map((forecast) {
-      //   return ForecastModel.fromJson(forecast);
-      // }).toList();
+      return WeatherModel.fromJson(body['results']);
     } else {
       throw Exception('Failed to load weather');
     }
