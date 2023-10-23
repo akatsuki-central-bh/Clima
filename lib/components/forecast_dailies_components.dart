@@ -1,4 +1,4 @@
-import 'package:clima/models/forecast_model.dart';
+import 'package:clima/data/models/forecast_model.dart';
 import 'package:flutter/material.dart';
 
 class ForecastDailiesComponents extends StatelessWidget {
