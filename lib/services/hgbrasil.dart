@@ -6,14 +6,13 @@ import 'package:clima/services/http_client.dart';
 class HgBrasil {
   final IHttpClient httpClient;
 
-  final token = '4d5fcf14';
-  final url = 'https://api.hgbrasil.com';
+  final url = 'http://localhost:3000';
 
   HgBrasil({required this.httpClient});
 
   Future<WeatherModel> getWeather(String woeid) async {
     final response = await httpClient.get(
-      url: "$url/weather?woeid=$woeid&key=$token",
+      url: "$url/weather?woeid=$woeid&test=true",
     );
 
     if (response.statusCode == 200) {
