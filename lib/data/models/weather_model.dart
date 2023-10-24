@@ -11,8 +11,8 @@ class WeatherModel {
   final String city;
   final String imgId;
   final int humidity;
-  final double cloudiness;
-  final double rain;
+  final num cloudiness;
+  final num rain;
   final String windSpeedy;
   final int windDirection;
   final String windCardinal;

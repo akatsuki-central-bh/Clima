@@ -3,8 +3,8 @@ class ForecastModel {
   final String weekday;
   final int max;
   final int min;
-  final double cloudiness;
-  final double rain;
+  final num cloudiness;
+  final num rain;
   final int rainProbability;
   final String windSpeedy;
   final String description;
