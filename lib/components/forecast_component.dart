@@ -59,7 +59,7 @@ class ForecastComponent extends StatelessWidget {
               ],
             ),
           ]),
-          Text("max: $max, min: $min",
+          Text("max: $max°\nmin: $min°",
               style: TextStyle(color: Colors.blue[50])),
         ],
       ),
