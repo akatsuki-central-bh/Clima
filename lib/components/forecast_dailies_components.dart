@@ -1,3 +1,4 @@
+import 'package:clima/components/forecast_component.dart';
 import 'package:clima/data/models/forecast_model.dart';
 import 'package:flutter/material.dart';
 
@@ -34,62 +35,19 @@ class ForecastDailiesComponents extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: forecasts.map((forecast) {
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.blue[500],
-                        border: Border.all(
-                          color: Colors.transparent,
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(20),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            forecast.weekday,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            forecast.date,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            forecast.description,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            forecast.max.toString(),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            forecast.min.toString(),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                      padding: const EdgeInsets.all(8.0),
+                      child: ForecastComponent(
+                        date: forecast.date,
+                        weekday: forecast.weekday,
+                        max: forecast.max,
+                        min: forecast.min,
+                        cloudiness: forecast.cloudiness,
+                        rain: forecast.rain,
+                        rainProbability: forecast.rainProbability,
+                        windSpeedy: forecast.windSpeedy,
+                        description: forecast.description,
+                        condition: forecast.condition,
+                      ));
                 }).toList(),
               ),
             ),
