@@ -4,15 +4,25 @@ import 'package:clima/data/models/weather_model.dart';
 import 'package:clima/services/http_client.dart';
 
 class HgBrasil {
-  final IHttpClient httpClient;
+  final HttpClient httpClient;
 
-  final url = 'http://localhost:3000';
+  final String username = 'admin';
+  final String password = 'admin';
+
+  final url = 'http://192.168.1.14:3000';
 
   HgBrasil({required this.httpClient});
 
   Future<WeatherModel> getWeather(String woeid) async {
+    final String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
     final response = await httpClient.get(
       url: "$url/weather?woeid=$woeid&test=true",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': basicAuth,
+      },
     );
 
     if (response.statusCode == 200) {
