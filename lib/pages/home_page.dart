@@ -3,6 +3,7 @@ import 'package:clima/data/models/weather_model.dart';
 import 'package:clima/services/hgbrasil.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/services/http_client.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -68,6 +69,7 @@ class Informations extends StatelessWidget {
           Weather(
             temp: weather.temp,
             description: weather.description,
+            conditionSlug: weather.conditionSlug,
           ),
         ],
       ),
@@ -115,11 +117,13 @@ class LocalTime extends StatelessWidget {
 class Weather extends StatelessWidget {
   final int temp;
   final String description;
+  final String conditionSlug;
 
   const Weather({
     super.key,
     required this.temp,
     required this.description,
+    required this.conditionSlug,
   });
 
   @override
@@ -130,10 +134,10 @@ class Weather extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              Icons.cloud,
-              size: 50,
-              color: Colors.blue[50],
+            SvgPicture.asset(
+              'lib/assets/images/$conditionSlug.svg',
+              height: 50,
+              width: 50,
             ),
             Text(
               '$temp°',
