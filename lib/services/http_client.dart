@@ -4,9 +4,9 @@ class HttpClient {
   final client = http.Client();
 
   Future get({
-    required String url,
+    required Uri uri,
     required Map<String, String> headers,
   }) async {
-    return await client.get(Uri.parse(url), headers: headers);
+    return await client.get(uri, headers: headers);
   }
 }

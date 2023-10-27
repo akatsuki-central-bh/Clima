@@ -10,21 +10,26 @@ class HgBrasil {
   final String username = 'admin';
   final String password = 'admin';
 
-  final url = 'http://192.168.1.14:3000';
+  final url = '192.168.1.14:3000';
 
   final cache = DefaultCacheManager();
 
   HgBrasil({required this.httpClient});
 
-  Future<WeatherModel> getWeather(String woeid) async {
-    final String urlEndpoint = "$url/weather?woeid=$woeid";
+  Future<WeatherModel> getWeather({String? woeid, String? cityName}) async {
+    final params = {
+      'woeid': woeid,
+      'city_name': cityName ?? 'São Paulo',
+    };
+
+    final uri = Uri.http(url, "/weather", params);
 
     try {
       final String basicAuth =
           'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
       final response = await httpClient.get(
-        url: urlEndpoint,
+        uri: uri,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': basicAuth,
@@ -33,15 +38,14 @@ class HgBrasil {
 
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
-
-        cache.putFile(urlEndpoint, response.bodyBytes);
+        cache.putFile(uri.toString(), response.bodyBytes);
 
         return WeatherModel.fromJson(body['results']);
       } else {
         throw Exception('Failed to load weather');
       }
     } catch (UnknownHostException) {
-      return getCacheInfo(urlEndpoint);
+      return getCacheInfo(uri.toString());
     }
   }
 

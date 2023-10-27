@@ -1,4 +1,5 @@
 import 'package:clima/components/forecast_dailies_components.dart';
+import 'package:clima/components/text_field_search.dart';
 import 'package:clima/data/models/weather_model.dart';
 import 'package:clima/services/hgbrasil.dart';
 import 'package:flutter/material.dart';
@@ -6,40 +7,51 @@ import 'package:clima/services/http_client.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title, required this.cityName});
 
   final String title;
+  final String cityName;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final Future<WeatherModel> weather =
-      HgBrasil(httpClient: HttpClient()).getWeather('455827');
+  late String cityName;
+
+  @override
+  void initState() {
+    super.initState();
+    cityName = widget.cityName;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final Future<WeatherModel> weather =
+        HgBrasil(httpClient: HttpClient()).getWeather(cityName: cityName);
+
     return Scaffold(
       backgroundColor: Colors.blue[500],
       body: SafeArea(
-        child: FutureBuilder<WeatherModel>(
-          future: weather,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              // return ForecastDailiesComponents(forecasts: snapshot.data!);
-              return Column(
-                children: [
-                  Informations(weather: snapshot.data!),
-                  ButtonsNav(),
-                  ForecastDailiesComponents(
-                      forecasts: snapshot.data!.forecasts),
-                ],
-              );
-            } else {
-              return Text("Erro");
-            }
-          },
+        child: SingleChildScrollView(
+          child: FutureBuilder<WeatherModel>(
+            future: weather,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    TextFieldExample(),
+                    Informations(weather: snapshot.data!),
+                    ButtonsNav(),
+                    ForecastDailiesComponents(
+                        forecasts: snapshot.data!.forecasts),
+                  ],
+                );
+              } else {
+                return Text(cityName);
+              }
+            },
+          ),
         ),
       ),
     );
